@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "name": "chatbot",
   "version": "1.0.0",
@@ -6,3 +7,13 @@
     "venom-bot": "^4.0.0"
   }
 }
+=======
+{
+  "name": "chatbot",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "venom-bot": "^4.0.0"
+  }
+}
+>>>>>>> f0b02f88a34796fb40aa84182421f84cb8682b62

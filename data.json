@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
     "Orçamento": {
         "nome": "João",
@@ -10,3 +11,17 @@
         "mensagem": "Olá Maria, preciso de suporte técnico."
     }
 }
+=======
+{
+    "Orçamento": {
+        "nome": "João",
+        "whatsapp": "5599999999999",
+        "mensagem": "Olá João, gostaria de pedir um orçamento."
+    },
+    "Suporte Técnico": {
+        "nome": "Maria",
+        "whatsapp": "5588888888888",
+        "mensagem": "Olá Maria, preciso de suporte técnico."
+    }
+}
+>>>>>>> f0b02f88a34796fb40aa84182421f84cb8682b62

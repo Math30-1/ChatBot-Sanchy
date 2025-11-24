@@ -96,4 +96,7 @@ def admin():
 
 if __name__ == "__main__":
     app.run(debug=True)
+<<<<<<< HEAD
 
+=======
+>>>>>>> f0b02f88a34796fb40aa84182421f84cb8682b62
