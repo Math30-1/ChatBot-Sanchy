@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import json, os
 
 app = Flask(__name__)
-app.secret_key = 'chave-secreta-simples'  # mude se quiser mais segurança
+app.secret_key = 'chave-secreta-simples'
 
 DATA_FILE = 'data.json'
 ADMIN_PASSWORD = 'admin123'
@@ -11,14 +11,12 @@ ADMIN_PASSWORD = 'admin123'
 # Funções auxiliares
 # -------------------------------
 def carregar_dados():
-    """Carrega as opções do arquivo JSON."""
     if not os.path.exists(DATA_FILE):
         return {}
     with open(DATA_FILE, 'r', encoding='utf-8') as f:
         return json.load(f)
 
 def salvar_dados(dados):
-    """Salva as opções no arquivo JSON."""
     with open(DATA_FILE, 'w', encoding='utf-8') as f:
         json.dump(dados, f, indent=4, ensure_ascii=False)
 
@@ -27,24 +25,25 @@ def salvar_dados(dados):
 # -------------------------------
 @app.route('/')
 def index():
-    opcoes = carregar_dados()
-    return render_template('index.html', opcoes=opcoes)
+    dados = carregar_dados()
+    return render_template('index.html', opcoes=dados)
 
 @app.route('/redirecionar')
 def redirecionar():
     escolha = request.args.get('opcao')
-    opcoes = carregar_dados()
+    dados = carregar_dados()
     
-    if escolha not in opcoes:
+    if escolha not in dados:
         return redirect('/')
-    
-    atendente = opcoes[escolha]
+
+    atendente = dados[escolha]
     mensagem = atendente['mensagem'].replace(' ', '+')
     link = f"https://wa.me/{atendente['whatsapp']}?text={mensagem}"
+
     return redirect(link)
 
 # -------------------------------
-# Área admin
+# Login admin
 # -------------------------------
 @app.route('/admin/login', methods=['GET', 'POST'])
 def login():
@@ -62,41 +61,89 @@ def logout():
     session.pop('admin', None)
     return redirect(url_for('index'))
 
+# -------------------------------
+# Painel Administrativo
+# -------------------------------
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
     if not session.get('admin'):
         return redirect(url_for('login'))
 
-    opcoes = carregar_dados()
+    dados = carregar_dados()
 
     if request.method == 'POST':
         acao = request.form.get('acao')
 
-        if acao == 'adicionar':
-            pergunta = request.form['pergunta']
+        # -----------------------------
+        # CADASTRAR ATENDENTE
+        # -----------------------------
+        if acao == 'adicionar_atendente':
+            nome = request.form['nome']
+            whatsapp = request.form['whatsapp']
+
+            dados[nome] = {
+                'nome': nome,
+                'whatsapp': whatsapp,
+                'mensagem': f"Olá {nome}, tudo bem?"
+            }
+
+            salvar_dados(dados)
+
+        # -----------------------------
+        # CADASTRAR SERVIÇO
+        # -----------------------------
+        elif acao == 'adicionar_servico':
+            servico = request.form['pergunta']
+            atendente_nome = request.form['nome']
+            mensagem = request.form['mensagem']
+
+            if atendente_nome not in dados:
+                return "Erro: atendente não existe", 400
+            
+            dados[servico] = {
+                'nome': atendente_nome,
+                'whatsapp': dados[atendente_nome]['whatsapp'],
+                'mensagem': mensagem
+            }
+
+            salvar_dados(dados)
+
+        # -----------------------------
+        # EDITAR SERVIÇO
+        # -----------------------------
+        elif acao == 'editar':
+            servico_original = request.form['pergunta_original']
+            novo_servico = request.form['nova_pergunta']
             nome = request.form['nome']
             whatsapp = request.form['whatsapp']
             mensagem = request.form['mensagem']
 
-            opcoes[pergunta] = {
-                'nome': nome,
-                'whatsapp': whatsapp,
-                'mensagem': mensagem
-            }
-            salvar_dados(opcoes)
+            # Remove chave antiga se renomeou o serviço
+            if novo_servico != servico_original:
+                dados.pop(servico_original, None)
 
+            dados[novo_servico] = {
+                "nome": nome,
+                "whatsapp": whatsapp,
+                "mensagem": mensagem
+            }
+
+            salvar_dados(dados)
+
+        # -----------------------------
+        # REMOVER SERVIÇO
+        # -----------------------------
         elif acao == 'remover':
-            pergunta = request.form['pergunta']
-            opcoes.pop(pergunta, None)
-            salvar_dados(opcoes)
+            servico = request.form['pergunta']
+            dados.pop(servico, None)
+            salvar_dados(dados)
 
         return redirect(url_for('admin'))
 
-    return render_template('admin.html', opcoes=opcoes)
+    return render_template('admin.html', opcoes=dados)
 
+# -------------------------------
+# Iniciar servidor
+# -------------------------------
 if __name__ == "__main__":
     app.run(debug=True)
-<<<<<<< HEAD
-
-=======
->>>>>>> f0b02f88a34796fb40aa84182421f84cb8682b62

@@ -3,33 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <title>Painel Admin</title>
+
+    <!-- CSS EXCLUSIVO DO ADMIN -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
 </head>
 <body>
-    <h2>Painel de Administração</h2>
-    <a href="{{ url_for('logout') }}">Sair</a>
 
-    <h3>Adicionar nova pergunta</h3>
-    <form method="post">
-        <input type="hidden" name="acao" value="adicionar">
-        <input type="text" name="pergunta" placeholder="Pergunta" required><br>
-        <input type="text" name="nome" placeholder="Nome do atendente" required><br>
-        <input type="text" name="whatsapp" placeholder="Número WhatsApp (com DDI)" required><br>
-        <input type="text" name="mensagem" placeholder="Mensagem inicial" required><br>
-        <button type="submit">Adicionar</button>
+<div class="admin-container">
+
+    <a href="{{ url_for('logout') }}" class="logout-link">Sair</a>
+
+    <h2 class="admin-title">Painel de Administração</h2>
+    <hr>
+
+    <!-- =======================
+         FORMULÁRIO 1: ATENDENTE
+    ======================== -->
+    <h3 class="admin-subtitle">➕ Cadastrar Atendente</h3>
+
+    <form method="post" class="admin-form">
+        <input type="hidden" name="acao" value="adicionar_atendente">
+
+        <label>Nome do atendente:</label>
+        <input type="text" name="nome" required>
+
+        <label>WhatsApp (com DDI):</label>
+        <input type="text" name="whatsapp" required>
+
+        <button type="submit" class="admin-btn">Cadastrar Atendente</button>
     </form>
 
-    <h3>Perguntas cadastradas</h3>
-    <ul>
+    <hr>
+
+    <!-- =======================
+         FORMULÁRIO 2: SERVIÇOS
+    ======================== -->
+    <h3 class="admin-subtitle">🛠 Cadastrar Serviço</h3>
+
+    <form method="post" class="admin-form">
+        <input type="hidden" name="acao" value="adicionar_servico">
+
+        <label>Nome do Serviço / Pergunta:</label>
+        <input type="text" name="pergunta" required>
+
+        <label>Selecione o Atendente:</label>
+        <select name="nome" required>
+            {% for key, item in opcoes.items() %}
+                <option value="{{ key }}">{{ key }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Mensagem inicial:</label>
+        <input type="text" name="mensagem" required>
+
+        <button type="submit" class="admin-btn">Cadastrar Serviço</button>
+    </form>
+
+    <hr>
+
+    <!-- =======================
+         LISTA DE SERVIÇOS
+    ======================== -->
+    <h3 class="admin-subtitle">📋 Serviços cadastrados</h3>
+
+    <ul class="service-list">
         {% for pergunta, dados in opcoes.items() %}
-        <li>
-            <strong>{{ pergunta }}</strong> → {{ dados.nome }} ({{ dados.whatsapp }})
-            <form method="post" style="display:inline;">
-                <input type="hidden" name="acao" value="remover">
-                <input type="hidden" name="pergunta" value="{{ pergunta }}">
-                <button type="submit">Remover</button>
-            </form>
-        </li>
+            {% if dados.mensagem %}
+            <li class="service-item">
+
+                <span><strong>{{ pergunta }}</strong> → {{ dados.nome }} ({{ dados.whatsapp }})</span>
+
+                <div style="display:flex; gap:8px;">
+                    <button type="button" class="admin-btn" onclick="mostrarFormulario('{{ pergunta }}')">
+                        Editar
+                    </button>
+
+                    <form method="post">
+                        <input type="hidden" name="acao" value="remover">
+                        <input type="hidden" name="pergunta" value="{{ pergunta }}">
+                        <button type="submit" class="remove-btn">Remover</button>
+                    </form>
+                </div>
+
+                <!-- FORMULÁRIO DE EDIÇÃO -->
+                <form method="post" id="form-{{ pergunta }}" class="admin-form"
+                      style="display:none; margin-top:15px;">
+
+                    <input type="hidden" name="acao" value="editar">
+                    <input type="hidden" name="pergunta_original" value="{{ pergunta }}">
+
+                    <label>Nova pergunta:</label>
+                    <input type="text" name="nova_pergunta" value="{{ pergunta }}" required>
+
+                    <label>Nome do atendente:</label>
+                    <input type="text" name="nome" value="{{ dados.nome }}" required>
+
+                    <label>WhatsApp:</label>
+                    <input type="text" name="whatsapp" value="{{ dados.whatsapp }}" required>
+
+                    <label>Mensagem inicial:</label>
+                    <input type="text" name="mensagem" value="{{ dados.mensagem }}" required>
+
+                    <button type="submit" class="admin-btn">Salvar alterações</button>
+                </form>
+
+            </li>
+            {% endif %}
         {% endfor %}
     </ul>
+
+</div>
+
+<!-- SCRIPT INCORPORADO -->
+<script>
+function mostrarFormulario(id) {
+    const f = document.getElementById("form-" + id);
+    f.style.display = f.style.display === "none" ? "block" : "none";
+}
+</script>
+
 </body>
 </html>

@@ -1,0 +1,116 @@
+/* ---------------------------
+   ESTILO DO PAINEL ADMIN
+   NÃO CONFLITA COM O SEU CSS
+---------------------------- */
+
+.admin-container {
+    max-width: 800px;
+    margin: 40px auto;
+    background: #1a1d21;
+    padding: 30px;
+    border-radius: 14px;
+    color: #e7e7e7;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+    border: 1px solid #2a2e33;
+    font-family: "Inter", sans-serif;
+}
+
+.admin-title {
+    font-size: 26px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.admin-subtitle {
+    margin-top: 35px;
+    font-size: 20px;
+    font-weight: 600;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #2d3238;
+}
+
+/* Inputs */
+.admin-form input,
+.admin-form select,
+.admin-form textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0 15px 0;
+    background: #111317;
+    border: 1px solid #333;
+    border-radius: 12px;
+    color: #e7e7e7;
+    font-size: 15px;
+}
+
+.admin-form input:focus,
+.admin-form textarea:focus {
+    border-color: #4aa3ff;
+    outline: none;
+}
+
+/* Botões */
+.admin-btn {
+    background: #4aa3ff;
+    border: none;
+    color: #0d0f12;
+    padding: 12px 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.25s ease;
+}
+
+.admin-btn:hover {
+    background: #79bdff;
+}
+
+/* Listagem */
+.service-list {
+    margin-top: 20px;
+    padding: 0;
+    list-style: none;
+}
+
+.service-item {
+    background: #23272f;
+    padding: 14px 18px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.service-item span {
+    font-weight: 600;
+}
+
+.remove-btn {
+    background: #ff4a6a;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.remove-btn:hover {
+    background: #ff6f88;
+}
+
+/* Link de sair */
+.logout-link {
+    display: block;
+    text-align: right;
+    margin-bottom: 15px;
+    color: #8ac4ff;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+.logout-link:hover {
+    color: #b1d8ff;
+}
