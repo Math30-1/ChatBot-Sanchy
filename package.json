@@ -1,0 +1,8 @@
+{
+  "name": "chatbot",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "venom-bot": "^4.0.0"
+  }
+}

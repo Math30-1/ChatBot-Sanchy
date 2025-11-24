@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel Admin</title>
+</head>
+<body>
+    <h2>Painel de Administração</h2>
+    <a href="{{ url_for('logout') }}">Sair</a>
+
+    <h3>Adicionar nova pergunta</h3>
+    <form method="post">
+        <input type="hidden" name="acao" value="adicionar">
+        <input type="text" name="pergunta" placeholder="Pergunta" required><br>
+        <input type="text" name="nome" placeholder="Nome do atendente" required><br>
+        <input type="text" name="whatsapp" placeholder="Número WhatsApp (com DDI)" required><br>
+        <input type="text" name="mensagem" placeholder="Mensagem inicial" required><br>
+        <button type="submit">Adicionar</button>
+    </form>
+
+    <h3>Perguntas cadastradas</h3>
+    <ul>
+        {% for pergunta, dados in opcoes.items() %}
+        <li>
+            <strong>{{ pergunta }}</strong> → {{ dados.nome }} ({{ dados.whatsapp }})
+            <form method="post" style="display:inline;">
+                <input type="hidden" name="acao" value="remover">
+                <input type="hidden" name="pergunta" value="{{ pergunta }}">
+                <button type="submit">Remover</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Admin</title>
+</head>
+<body>
+    <h2>Área Administrativa</h2>
+    {% if erro %}<p style="color:red;">{{ erro }}</p>{% endif %}
+    <form method="post">
+        <input type="password" name="senha" placeholder="Digite a senha" required>
+        <button type="submit">Entrar</button>
+    </form>
+</body>
+</html>

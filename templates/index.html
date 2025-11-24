@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title> Pré-Atendimento Sanchy </title>
+
+    <!-- Importando o CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- Cabeçalho -->
+    <div class="header">
+        Pré-Atendimento Sanchy
+    </div>
+
+    <!-- Container principal do chatbot -->
+    <div class="chat-container">
+
+        <div class="message bot">
+            <strong>Como posso te ajudar hoje?</strong>
+        </div>
+
+        <!-- Lista de perguntas como botões/cartões -->
+        {% for pergunta in opcoes.keys() %}
+        <div class="message user" style="cursor:pointer">
+            <a href="{{ url_for('redirecionar') }}?opcao={{ pergunta }}" 
+               style="color: var(--accent-light); text-decoration: none; font-weight: 600;">
+                {{ pergunta }}
+            </a>
+        </div>
+        {% endfor %}
+
+    </div>
+
+</body>
+</html>
+
